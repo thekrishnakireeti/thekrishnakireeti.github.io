@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishna Kireeti — Embedded Firmware Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050816;--bg2:#0B1120;--blue:#00D4FF;--purple:#7C3AED;--cyan:#67E8F9;
+  --white:#F8FAFC;--gray:#94A3B8;--card:#0D1829;--border:rgba(0,212,255,0.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+
+/* PARTICLES */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+/* NAVBAR */
+nav{position:fixed;top:0;width:100%;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s}
+nav.scrolled{background:rgba(5,8,22,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Sora',sans-serif;font-weight:700;font-size:1.2rem;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:0.85rem;letter-spacing:0.05em;transition:color 0.3s;text-transform:uppercase}
+.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:var(--white);transition:all 0.3s;display:block}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(5,8,22,0.98);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--white);text-decoration:none;font-size:1.5rem;font-family:'Sora',sans-serif;font-weight:600;transition:color 0.3s}
+.mobile-menu a:hover{color:var(--blue)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;padding:6rem 6% 4rem}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.hero-tag{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:50px;padding:0.4rem 1rem;font-size:0.78rem;color:var(--blue);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite}
+h1.hero-name{font-family:'Sora',sans-serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:800;line-height:1.1;margin-bottom:0.5rem}
+.gradient-text{background:linear-gradient(135deg,var(--blue),var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-role{font-size:1.1rem;color:var(--gray);margin-bottom:0.5rem;font-weight:300}
+.hero-tags{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.hero-tags span{font-size:0.75rem;color:var(--cyan);opacity:0.8}
+.hero-stmt{font-size:1rem;color:var(--gray);line-height:1.8;margin-bottom:2rem;max-width:480px}
+.hero-stmt em{color:var(--blue);font-style:normal}
+.cta-group{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:8px;color:#fff;font-size:0.9rem;font-weight:600;cursor:pointer;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;display:inline-block}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,0.3)}
+.btn-outline{padding:0.8rem 1.8rem;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:0.9rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all 0.2s;display:inline-block}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+
+/* HERO PHOTO */
+.hero-visual{display:flex;justify-content:center;align-items:center}
+.photo-frame{position:relative;width:320px;height:380px}
+.photo-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.15),transparent 70%);animation:glow-pulse 3s ease-in-out infinite}
+.photo-ring{position:absolute;inset:0;border:1px solid rgba(0,212,255,0.3);border-radius:20px;animation:ring-rotate 8s linear infinite}
+.photo-placeholder{width:100%;height:100%;border-radius:20px;background:linear-gradient(135deg,#0D1829,#1a2640);border:1px solid rgba(0,212,255,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;position:relative;overflow:hidden}
+.photo-placeholder::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(transparent,rgba(0,212,255,0.05),transparent 30%);animation:spin 6s linear infinite}
+.photo-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;color:#fff;z-index:1}
+.photo-label{font-size:0.8rem;color:var(--gray);z-index:1;text-align:center;padding:0 1rem}
+.photo-hint{font-size:0.7rem;color:rgba(0,212,255,0.5);z-index:1}
+.floating-badge{position:absolute;background:rgba(13,24,41,0.9);border:1px solid var(--border);border-radius:10px;padding:0.5rem 0.8rem;font-size:0.72rem;color:var(--white);white-space:nowrap;backdrop-filter:blur(8px)}
+.badge-1{bottom:-10px;left:-20px;animation:float1 3s ease-in-out infinite}
+.badge-2{top:-10px;right:-20px;animation:float2 3s ease-in-out infinite 1.5s}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:5px}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:6rem 6%}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-label{font-size:0.75rem;color:var(--blue);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem}
+.section-label::before{content:'';width:30px;height:1px;background:var(--blue)}
+h2.section-title{font-family:'Sora',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;margin-bottom:1rem}
+.section-sub{color:var(--gray);font-size:1rem;line-height:1.8;max-width:600px;margin-bottom:3rem}
+
+/* ABOUT */
+#about{background:linear-gradient(180deg,transparent,rgba(11,17,32,0.5),transparent)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.about-text p{color:var(--gray);line-height:1.9;margin-bottom:1.5rem;font-size:0.95rem}
+.about-text p em{color:var(--cyan);font-style:normal}
+.about-blocks{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.about-block{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
+.about-block h4{font-family:'Sora',sans-serif;font-size:0.8rem;color:var(--blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem}
+.about-block p{font-size:0.82rem;color:var(--gray);line-height:1.7}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem}
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden}
+.project-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.04),transparent);opacity:0;transition:opacity 0.3s}
+.project-card:hover{border-color:rgba(0,212,255,0.4);transform:translateY(-4px)}
+.project-card:hover::before{opacity:1}
+.project-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.project-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(124,58,237,0.15));border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.project-tag{font-size:0.7rem;background:rgba(0,212,255,0.1);color:var(--blue);padding:0.25rem 0.7rem;border-radius:50px;border:1px solid rgba(0,212,255,0.2)}
+.project-title{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:600;margin-bottom:0.5rem}
+.project-desc{font-size:0.85rem;color:var(--gray);line-height:1.7;margin-bottom:1rem}
+.project-stack{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem}
+.stack-pill{font-size:0.7rem;background:rgba(124,58,237,0.12);color:#a78bfa;padding:0.2rem 0.6rem;border-radius:50px;border:1px solid rgba(124,58,237,0.2)}
+.project-links{display:flex;gap:0.8rem}
+.project-links a{font-size:0.78rem;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:0.3rem;transition:opacity 0.2s}
+.project-links a:hover{opacity:0.7}
+.featured-badge{position:absolute;top:1rem;right:1rem;font-size:0.65rem;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;padding:0.2rem 0.6rem;border-radius:50px}
+
+/* EXPERIENCE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--blue),var(--purple),transparent)}
+.timeline-item{position:relative;padding-bottom:3rem}
+.timeline-dot{position:absolute;left:-2.4rem;top:0.2rem;width:14px;height:14px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px rgba(0,212,255,0.5)}
+.timeline-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem}
+.timeline-meta{font-size:0.78rem;color:var(--blue);margin-bottom:0.3rem;letter-spacing:0.05em}
+.timeline-role{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:600;margin-bottom:0.2rem}
+.timeline-org{font-size:0.85rem;color:var(--gray);margin-bottom:1rem}
+.timeline-points{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+.timeline-points li{font-size:0.85rem;color:var(--gray);padding-left:1.2rem;position:relative;line-height:1.7}
+.timeline-points li::before{content:'▸';position:absolute;left:0;color:var(--blue)}
+
+/* SKILLS */
+.skills-leadership{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.skills-cats{display:flex;flex-direction:column;gap:1.2rem}
+.skill-cat h4{font-size:0.75rem;color:var(--blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.7rem}
+.skill-pills{display:flex;flex-wrap:wrap;gap:0.5rem}
+.skill-pill{font-size:0.8rem;background:rgba(13,24,41,0.8);border:1px solid var(--border);color:var(--gray);padding:0.35rem 0.8rem;border-radius:8px;transition:all 0.2s}
+.skill-pill:hover{border-color:var(--blue);color:var(--blue)}
+.leadership-cards{display:flex;flex-direction:column;gap:1rem}
+.lead-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;display:flex;gap:1rem;align-items:flex-start}
+.lead-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(0,212,255,0.1));display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.lead-info h4{font-size:0.9rem;font-weight:600;margin-bottom:0.2rem}
+.lead-info p{font-size:0.78rem;color:var(--gray);line-height:1.6}
+
+/* RESUME */
+.resume-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center}
+.stats-row{display:flex;justify-content:center;gap:3rem;margin:2rem 0}
+.stat-item{text-align:center}
+.stat-num{font-family:'Sora',sans-serif;font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-lbl{font-size:0.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.contact-info{display:flex;flex-direction:column;gap:1.2rem}
+.contact-item{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem}
+.contact-item-icon{width:38px;height:38px;border-radius:8px;background:rgba(0,212,255,0.1);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.contact-item-info{font-size:0.85rem}
+.contact-item-info span{display:block;font-size:0.7rem;color:var(--blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.2rem}
+.contact-form{display:flex;flex-direction:column;gap:1rem}
+.form-input{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1rem;color:var(--white);font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%}
+.form-input:focus{border-color:var(--blue)}
+.form-input::placeholder{color:var(--gray)}
+textarea.form-input{resize:vertical;min-height:120px}
+.open-to{margin-top:1.5rem;padding:1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.open-to h4{font-size:0.75rem;color:var(--blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.7rem}
+.open-to-pills{display:flex;flex-wrap:wrap;gap:0.5rem}
+.open-to-pills span{font-size:0.75rem;color:var(--gray);background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);padding:0.3rem 0.8rem;border-radius:50px}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2rem 6%;text-align:center;position:relative;z-index:1}
+.footer-quote{font-family:'Sora',sans-serif;font-size:1rem;color:var(--gray);margin-bottom:0.8rem;font-style:italic}
+.footer-quote em{color:var(--blue);font-style:normal}
+.footer-copy{font-size:0.75rem;color:rgba(148,163,184,0.5)}
+
+/* ANIMATIONS */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+@keyframes glow-pulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes ring-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;animation:fadeUp 0.7s ease forwards}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-inner,.about-grid,.skills-leadership,.contact-grid{grid-template-columns:1fr}
+  .hero-visual{order:-1}
+  .photo-frame{width:220px;height:260px}
+  .about-blocks{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .stats-row{gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo">KKK</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero" onclick="toggleMenu()">Home</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#projects" onclick="toggleMenu()">Projects</a>
+  <a href="#experience" onclick="toggleMenu()">Experience</a>
+  <a href="#skills" onclick="toggleMenu()">Skills</a>
+  <a href="#resume" onclick="toggleMenu()">Resume</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="fade-up" style="animation-delay:0.1s">
+      <div class="hero-tag"><span class="dot"></span>Available for Opportunities</div>
+      <h1 class="hero-name">Krishna<br><span class="gradient-text">Kireeti</span><br>Kasinadhuni</h1>
+      <p class="hero-role">Aspiring Embedded and Software Engineer</p>
+      <div class="hero-tags">
+        <span>Business Enthusiast</span><span>•</span><span>Tech Explorer</span><span>•</span><span>Problem Solver</span>
+      </div>
+      <p class="hero-stmt">"An <em>Average guy</em> trying to become better every single day — building, learning, leading.”</p>
+      <div class="cta-group">
+        <a href="#projects" class="btn-primary">Explore Projects</a>
+        <a href="#resume" class="btn-outline">Download Resume</a>
+        <a href="#contact" class="btn-outline">Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-visual fade-up" style="animation-delay:0.3s">
+      <div class="photo-frame">
+        <div class="photo-glow"></div>
+        <div class="photo-ring"></div>
+        <div class="photo-placeholder">
+          
+<div style="
+  width:320px;
+  height:380px;
+  border-radius:20px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#111;
+">
+
+  <img 
+    src="file_00000000de487206bfa2011f20096d81.png"
+    alt="Krishna Kireeti"
+    style="
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center top;
+      display:block;
+    "
+  >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title">The Engineer Behind the Build</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm an embedded systems enthusiast driven by curiosity for how machines sense, communicate, and respond. From <em>UAV stabilization</em> to <em>visible light communication systems</em>, I enjoy building projects where software directly interacts with the physical world.</p>
+        <p>Currently completed my final year of Engineering at <em>RGUKT Nuzvid</em> in the Department of Electronics and Communication Engineering, I've built real-time systems with FreeRTOS, integrated multi-protocol sensor stacks, and led large-scale technical events.</p>
+        <p>Beyond engineering, I believe the best systems are built by people who lead well, think strategically, and communicate clearly.</p>
+      </div>
+      <div class="about-blocks">
+        <div class="about-block">
+          <h4>Who I Am</h4>
+          <p>Curious Engineer · Business Mindset · Loves experimentation and first-principles thinking</p>
+        </div>
+        <div class="about-block">
+          <h4>What I Work With</h4>
+          <p>Embedded systems · UAV firmware · Sensor-Based Automation · Real-time Firmware Solutions</p>
+        </div>
+        <div class="about-block">
+          <h4>Currently Exploring</h4>
+          <p>STM32 · FreeRTOS · Embedded Systems · Flight Control · Sensor Fusion · Intelligent Systems </p>
+        </div>
+        <div class="about-block">
+          <h4>Long-Term Vision</h4>
+          <p>To contribute to the semiconductor and embedded industry through innovation, problem solving, and a strong business mindset.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">What I've Built</h2>
+    <p class="section-sub">Projects spanning real-time systems, visible light communication, autonomous robotics, and machine learning-driven firmware.</p>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <span class="featured-badge">Featured</span>
+        <div class="project-header">
+          <div class="project-icon">🛩️</div>
+          <span class="project-tag">FreeRTOS</span>
+        </div>
+        <div class="project-title">FreeRTOS Flight Data Logger</div>
+        <div class="project-desc">Real-time flight data logging system on STM32F446RE with 6 concurrent RTOS tasks, multi-protocol sensor fusion, and FatFS SD card logging.</div>
+        <div class="project-stack">
+          <span class="stack-pill">STM32F446RE</span><span class="stack-pill">FreeRTOS</span><span class="stack-pill">MPU-6050</span><span class="stack-pill">BMP280</span><span class="stack-pill">NEO-6M GPS</span><span class="stack-pill">FatFS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/thekrishnakireeti/STM32-Flight-Data-Logger" target="_blank">⬡ GitHub</a>
+          <a href="#">→ View Details</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">💡</div>
+          <span class="project-tag">VLC / Li-Fi</span>
+        </div>
+        <div class="project-title">Li-Fi Based Optical Data Transmission</div>
+        <div class="project-desc">Visible Light Communication system using LED modulation and photodiode circuits, achieving ~75 characters/min throughput with firmware encoding/decoding.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Arduino</span><span class="stack-pill">LED Modulation</span><span class="stack-pill">Photodiode</span><span class="stack-pill">C Firmware</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/thekrishnakireeti/Li-Fi-Optical-Data-Transmission" target="_blank">⬡ GitHub</a>
+          <a href="#">→ View Details</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🤖</div>
+          <span class="project-tag">Robotics</span>
+        </div>
+        <div class="project-title">RFID-Based Smart Guided Tourist Robot</div>
+        <div class="project-desc">Autonomous indoor navigation robot using RFID-based path tracking, DC motor control firmware, and LCD-based navigation feedback system.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Arduino</span><span class="stack-pill">RFID</span><span class="stack-pill">DC Motors</span><span class="stack-pill">LCD Display</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/thekrishnakireeti/Smart_Guided_RFIDBot-ZOO" target="_blank">⬡ GitHub</a>
+          <a href="#">→ View Details</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">✈️</div>
+          <span class="project-tag">ML · Predictive</span>
+        </div>
+        <div class="project-title">Aircraft Engine RUL Predictor</div>
+        <div class="project-desc">This project predicts engine Remaining Useful Life (RUL) using CMAPSS FD001 dataset with Random Forest, XGBoost, GRU, and LSTM models. Performance is evaluated via RMSE, showcasing predictive maintenance for aerospace reliability.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Python</span><span class="stack-pill">LSTM</span><span class="stack-pill">GRU</span><span class="stack-pill">NASA CMAPSS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/thekrishnakireeti/Aircraft-Engine-RUL-Prediction" target="_blank">⬡ GitHub</a>
+          <a href="#">→ View Details</a>
+        </div>
+      </div>
+<div class="project-card">
+  <div class="project-header">
+    <div class="project-icon">🛰️</div>
+    <span class="project-tag">Drone · VLC · VLP</span>
+  </div>
+
+  <div class="project-title">
+    Visual Light Positioning for Indoor Drone Navigation
+  </div>
+
+  <div class="project-desc">
+    Visual Light Positioning (VLP) based indoor drone navigation system using Raspberry Pi, ADS1115 ADC, and photodiode sensing for real-time optical signal analysis and localization in GPS-denied environments. </div>
+
+  <div class="project-stack">
+    <span class="stack-pill">Raspberry Pi</span>
+    <span class="stack-pill">Python</span>
+    <span class="stack-pill">ADS1115</span>
+    <span class="stack-pill">VLC</span>
+    <span class="stack-pill">FFT</span>
+    <span class="stack-pill">Drone Navigation</span>
+  </div>
+
+  <div class="project-links">
+    <a href="https://github.com/thekrishnakireeti/Visual-Light-Positioning-for-Indoor-Drone-Navigation">⬡ GitHub</a>
+    <a href="#">→ View Details</a>
+  </div>
+</div>
+<div class="project-card">
+  <div class="project-header">
+    <div class="project-icon">📡</div>
+    <span class="project-tag">Embedded Systems</span>
+  </div>
+  <div class="project-title">UART Telemetry Pipeline Simulator</div>
+  <div class="project-desc">Software-based telemetry system that simulates sensor data, transmits structured UART frames with checksum validation, and logs verified telemetry data using virtual serial communication on Linux.</div>
+  <div class="project-stack">
+    <span class="stack-pill">C</span>
+    <span class="stack-pill">Python</span>
+    <span class="stack-pill">UART</span>
+    <span class="stack-pill">Linux (WSL)</span>
+    <span class="stack-pill">Serial Communication</span>
+  </div>
+  <div class="project-links">
+    <a href="https://github.com/thekrishnakireeti/Telemetry-Simulation-UART-Streaming-Task" target="_blank">⬡ GitHub</a>
+    <a href="#">→ View Details</a>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title">Where I've Worked</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-meta">May 2025 – July 2025</div>
+          <div class="timeline-role">Research Intern — Embedded Systems</div>
+          <div class="timeline-org">IIITDM Kurnool · Raspberry Pi & Quadcopter (UAV)</div>
+          <ul class="timeline-points">
+            <li>Executed PWM-based LED modulation and ADC signal acquisition for VLC-based UAV localization in indoor environments.</li>
+            <li>Applied PID tuning and IMU + altimeter sensor fusion to improve UAV stability and reduce drift during test flights.</li>
+            <li>Optimized ESC timing and firmware integration to achieve smoother and more reliable flight control.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--purple)"></div>
+        <div class="timeline-card">
+          <div class="timeline-meta">2022 – 2026</div>
+          <div class="timeline-role">B.Tech — Electronics & Communication Engineering</div>
+          <div class="timeline-org">Rajiv Gandhi University of Knowledge Technologies, Nuzvid</div>
+          <ul class="timeline-points">
+            <li>CGPA: 8.22 — Specializing in embedded firmware development and real-time systems.</li>
+            <li>Thesis: FreeRTOS-based Flight Data Logger using STM32F446RE with multi-protocol sensor integration.</li>
+            <li>Led Teckzite'25 as Convenor and served as President of SDCAC.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">Capabilities & Leadership</div>
+    <h2 class="section-title">Skills & Roles</h2>
+    <div class="skills-leadership">
+      <div>
+        <div class="skills-cats">
+          <div class="skill-cat">
+            <h4>Embedded Systems</h4>
+            <div class="skill-pills">
+              <span class="skill-pill">PWM</span><span class="skill-pill">ADC</span><span class="skill-pill">Interrupts</span><span class="skill-pill">Timers</span><span class="skill-pill">Sensor Interfacing</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h4>Communication Protocols</h4>
+            <div class="skill-pills">
+              <span class="skill-pill">UART</span><span class="skill-pill">SPI</span><span class="skill-pill">I2C</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h4>Programming</h4>
+            <div class="skill-pills">
+              <span class="skill-pill">C (Embedded)</span><span class="skill-pill">Python</span><span class="skill-pill">Bare-metal</span><span class="skill-pill">FreeRTOS</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h4>Platforms & Tools</h4>
+            <div class="skill-pills">
+              <span class="skill-pill">Arduino</span><span class="skill-pill">ESP32</span><span class="skill-pill">Raspberry Pi</span><span class="skill-pill">STM32</span><span class="skill-pill">KiCad</span><span class="skill-pill">Mission Planner</span><span class="skill-pill">Multisim</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h4>Certifications</h4>
+            <div class="skill-pills">
+              <span class="skill-pill">NPTEL – Microprocessors (IIT Guwahati)</span>
+              <span class="skill-pill">NIELIT – Embedded Beginners</span>
+              <span class="skill-pill">NPTEL – Entrepreneurship (IIT Bombay)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="leadership-cards">
+        <div class="lead-card">
+          <div class="lead-icon">🎯</div>
+          <div class="lead-info">
+            <h4>Convenor — Teckzite'25</h4>
+            <p>Led organization of a large-scale technical fest, coordinated student teams across multiple events and departments.</p>
+          </div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-icon">🏛️</div>
+          <div class="lead-info">
+            <h4>President — SDCAC</h4>
+            <p>Organized hackathons and mentored multiple student project teams in embedded systems and innovation challenges.</p>
+          </div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-icon">📣</div>
+          <div class="lead-info">
+            <h4>President — E-CRUSH & Promotions Manager</h4>
+            <p>Managed promotions for Teckzite fest, led outreach campaigns and student community engagement initiatives.</p>
+          </div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-icon">🤝</div>
+          <div class="lead-info">
+            <h4>Volunteer — NSS & Student Mitra</h4>
+            <p>Contributed to national service initiatives and community engagement programs through NSS and Student Mitra.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-inner">
+    <div class="section-label">Resume</div>
+    <h2 class="section-title">At a Glance</h2>
+    <div class="resume-box">
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-num">8.22</div><div class="stat-lbl">CGPA</div></div>
+        <div class="stat-item"><div class="stat-num">5+</div><div class="stat-lbl">Projects</div></div>
+        <div class="stat-item"><div class="stat-num">4+</div><div class="stat-lbl">Leadership Roles</div></div>
+        <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">Internship</div></div>
+      </div>
+      <p style="color:var(--gray);font-size:0.9rem;margin-bottom:1.5rem">Full resume available for download — includes all projects, experience, certifications, and skills.</p>
+      <a href="Krishna_Kireeti_Kasinadhuni_Resume.pdf" class="btn-primary" download>⬇ Download Resume (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Let's Connect</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-item-icon">✉️</div>
+            <div class="contact-item-info"><span>Email</span>kasinadhunikrishnakireetiedu@gmail.com</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📱</div>
+            <div class="contact-item-info"><span>Phone</span>+91 9494842953</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">💼</div>
+            <div class="contact-item-info"><span>LinkedIn</span>https://www.linkedin.com/in/krishna-kireeti-kasinadhuni/</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">⬡</div>
+            <div class="contact-item-info"><span>GitHub</span>https://github.com/thekrishnakireeti</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-info"><span>Location</span>Andhra Pradesh, India</div>
+          </div>
+        </div>
+        <div class="open-to">
+          <h4>Open To</h4>
+          <div class="open-to-pills">
+            <span>Embedded Roles</span><span>Collaborations</span><span>Business Roles</span><span>Startup Opportunities</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <input type="text" class="form-input" placeholder="Your Name">
+        <input type="email" class="form-input" placeholder="Your Email">
+        <textarea class="form-input" placeholder="Your Message"></textarea>
+        <button class="btn-primary" style="width:100%;text-align:center">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-quote">"An average guy trying to build <em>extraordinary things</em>."</p>
+  <p class="footer-copy">© 2026 Krishna Kireeti Kasinadhuni · Built with purpose</p>
+</footer>
+
+<script>
+// Particles
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<80;i++){
+  particles.push({x:Math.random()*1920,y:Math.random()*1080,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*1.5+0.5,o:Math.random()*0.4+0.1})
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,212,255,${p.o})`;ctx.fill();
+  });
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,212,255,${0.05*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke()}
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+// Navbar scroll
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  nav.classList.toggle('scrolled',window.scrollY>50);
+  const sections=['hero','about','projects','experience','skills','resume','contact'];
+  let cur='';
+  sections.forEach(id=>{const el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-100)cur=id});
+  document.querySelectorAll('.nav-links a').forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+});
+
+// Mobile menu
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
+</script>
+</body>
+</html>
